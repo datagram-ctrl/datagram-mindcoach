@@ -30,7 +30,9 @@ kişiye özel **tavsiye**, **çalışma planı**, **örnek soru** ve **başarı 
 - **Hibrit tavsiye:** Fine-tune model tek başına duyguyu kaybedip yalnızca teknik üretiyordu. Çözüm:
   **duygu açılış (koddan)** + **teknik orta (fine-tune model)** + **sıcak kapanış (koddan).**
 - **Sekmeye göre adaptör:** `model_uret(messages, ..., adapter_kullan=True/False)`.
-  Tavsiye → adaptör **açık** (fine-tune). Soru üretimi / çözüm / sohbet / değerlendirme → adaptör **kapalı** (base davranış).
+  Tavsiye → adaptör **açık** (fine-tune). 
+  sohbet / değerlendirme → adaptör **kapalı** (base davranış).
+  -Sohbet ve değerledirme kısmının base modelle çalışması programın ana amacının eğitilmiş modelle çalıştırıldığı gerçeğini değiştirmez fakat ilerleyen aşamalarda projenin farklı kısımlarında farklı yönlerden eğitilmiş modeller kullanmayı amaçlamaktayız.
 - **Çeşitlilik:** Açılış/çalışma-tarzı/kapanış cümleleri havuzlardan `random.choice` ile seçilir (her kombinasyona birden çok varyant) → tekrar önlenir.
 - **Çıktı güvenliği:** `latex_guvenli_sar()` markdown başlıklarını temizler, çıplak LaTeX'i `$...$` ile sarar, yarım `$` düzeltir, okunabilirlik için adımları ayrı satıra alır.
 - **Sözel/sayısal ayrımı:** Sözel derslerde kavramsal soru (sayısal yasak), sayısal derslerde matematik mantığı.
@@ -65,20 +67,28 @@ kişiye özel **tavsiye**, **çalışma planı**, **örnek soru** ve **başarı 
    `/content/drive/MyDrive/MindCoach_Ozetler` klasörüne koy. PDF başlıkları
    `### KONU: <ad>` formatında ve adlar `DERS_KONULARI`'ndaki adlarla birebir aynı olmalı.
    Uygulamada "özetleri yükle" ile parse edilir (pdfplumber).
-4. **TÜM `mindcoach_pro.py`'yi tek hücrede çalıştır.** Sonda `demo.launch(share=True)` ile public link açılır.
+4. **TÜM `datagram_mindcoach.py`'yi tek hücrede çalıştır.** Sonda `demo.launch(share=True)` ile public link açılır.
 
 > ⚠️ Colab uyarısı: kodu parça parça farklı hücrelere yapıştırmak eski tanımları bellekte bırakır.
 > Tekrar çalıştırırken `demo.launch()`'u durdurup tüm dosyayı tek hücrede çalıştır.
 
 `model`/`tokenizer` yüklenmemişse uygulama çökmek yerine şablon yedeğe düşer ve uyarı gösterir.
 
+### 🌐 Canlı Demo & Erişim
+
+Model ağırlıkları (LoRA adaptörü) ve konu özeti PDF'leri geliştiricinin Google Drive'ında tutulur.
+Uygulama, geliştiricinin kendi Colab ortamında Drive bağlıyken çalıştırılır ve `demo.launch(share=True)`
+ile üretilen geçici public link üzerinden test edilebilir. Bu yapı, yönergedeki **"model ağırlıkları
+sizin ortamınızda (lokal / Colab / Spaces) çalışıyor olmalıdır"** kuralına uygundur — çıkarım (inference)
+tamamen kendi ortamımızda yapılır, hiçbir ticari API'ye devredilmez.
+
 ---
 
 ## 📚 Eğitim & Veri
 
-- **Veri:** 489 ChatML örneği (`mindcoach_chatml.jsonl`), ders ders Gemini ile üretilip temizlendi.
+- **Veri:** 489 ChatML örneği (`mindcoach_chatml.jsonl`), ders ders Gemini ile üretilip tarafımızca temizlendi.
 - **Eğitim:** `Training.ipynb` (A100, LoRA/Unsloth).
-- **Karşılaştırma:** Fine-tune model, base modeli açık ara geçti (base model,teknik cevapalrdan çok uzak duygusal ağırlıklı cevaplar veriyordu(kötü anlamda)).
+- **Karşılaştırma:** Fine-tune model, base modeli açık ara geçti (base model, teknik cevaplardan çok uzak, duygusal ağırlıklı cevaplar veriyordu — kötü anlamda).
 
 ---
 
@@ -94,12 +104,12 @@ kişiye özel **tavsiye**, **çalışma planı**, **örnek soru** ve **başarı 
 ## 🗂️ Dosya Yapısı
 
 ```
-mindcoach_pro.py        # Ana uygulama (Gradio, tüm sekmeler)
-mindcoach_chatml.jsonl  # 489 eğitim örneği (ChatML)
-Training.ipynb          # A100 fine-tune notebook'u
-requirements.txt        # Bağımlılıklar
-README.md               # Bu dosya
+datagram_mindcoach.py    # Ana uygulama (Gradio, tüm sekmeler)
+Datagram-MindCoach.ipynb # Uygulamanın Colab notebook hali
+mindcoach_chatml.jsonl   # 489 eğitim örneği (ChatML)
+Training.ipynb           # A100 fine-tune notebook'u (eğitim adımları)
+training_loss.png        # Eğitim loss grafiği (kanıt)
+requirements.txt         # Bağımlılıklar
+README.md                # Bu dosya
+ozetler/                 # Konu özeti PDF'leri (Konu Çalış sekmesini besler)
 ```
-
----
-

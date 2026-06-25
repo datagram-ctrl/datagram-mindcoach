@@ -71,7 +71,7 @@ kişiye özel **tavsiye**, **çalışma planı**, **örnek soru** ve **başarı 
 
 > ⚠️ Colab uyarısı: kodu parça parça farklı hücrelere yapıştırmak eski tanımları bellekte bırakır.
 > Tekrar çalıştırırken `demo.launch()`'u durdurup tüm dosyayı tek hücrede çalıştır.
-
+> ⚠️ Colab uyarısı-2: kod blokları çalıştırıldığın output kısmında özellikle kurulum hücresinde çıkan hata yazıları uygulamanın çalışmasına engel hatalardan ziyade basit uyarılardır.
 `model`/`tokenizer` yüklenmemişse uygulama çökmek yerine şablon yedeğe düşer ve uyarı gösterir.
 
 ### 🌐 Canlı Demo & Erişim
